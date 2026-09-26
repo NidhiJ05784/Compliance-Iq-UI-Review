@@ -16,21 +16,18 @@ const DEMO_PROFILES = [
     role: "admin",
     label: "Admin",
     email: "admin@complianceiq.com",
-    password: "Admin@1234",
     description: "Full system access",
   },
   {
     role: "officer",
     label: "Compliance Officer",
     email: "officer@complianceiq.com",
-    password: "Officer@1234",
     description: "Resolve and escalate alerts",
   },
   {
     role: "analyst",
     label: "Analyst",
     email: "analyst@complianceiq.com",
-    password: "Analyst@1234",
     description: "View-only investigations",
   },
 ];
@@ -43,7 +40,7 @@ export default function Login() {
     useState("admin@complianceiq.com");
 
   const [password, setPassword] =
-    useState("Admin@1234");
+    useState("");
 
   const [role, setRole] =
     useState("admin");
@@ -60,7 +57,7 @@ export default function Login() {
 
     setRole(profile.role);
     setEmail(profile.email);
-    setPassword(profile.password);
+    setPassword("");
     setError("");
   }
 
@@ -431,7 +428,7 @@ export default function Login() {
 
             <p className="mt-2 text-xs text-slate-500 dark:text-slate-400">
               {DEMO_PROFILES.find((profile) => profile.role === role)?.description}
-              {" · credentials filled automatically"}
+              {" · type the password manually"}
             </p>
 
           </div>

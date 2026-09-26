@@ -8,6 +8,7 @@ import Layout from "../components/Layout";
 import StatCard from "../components/StatCard";
 import AlertRow from "../components/AlertRow";
 import ShapChart from "../components/ShapChart";
+import AlertsSummaryChart from "../components/AlertsSummaryChart";
 
 
 import {
@@ -261,6 +262,8 @@ const [alerts, setAlerts] =
           />
 
         </div>
+
+        <AlertsSummaryChart alerts={alerts} />
 
         {/* RECENT ALERTS */}
 

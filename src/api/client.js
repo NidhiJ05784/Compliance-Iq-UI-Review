@@ -276,6 +276,27 @@ export async function checkTransaction(payload) {
   } catch (error) {
     if (error.response || !isDemoMode()) throw error;
 
+    if (payload.kyc_verified) {
+      return {
+        transaction_id: `DEMO-TXN-${Date.now()}`,
+        flagged: false,
+        risk_level: "low",
+        risk_score: 0.05,
+        violations_found: 0,
+        flags: [],
+        ml_probability: 0.08,
+        shap_explanation: [
+          { feature: "amount", value: payload.amount, shap_value: 0.05 },
+          { feature: "tx_count_7d", value: payload.tx_count_7d, shap_value: 0.02 },
+          { feature: "kyc_verified", value: true, shap_value: -0.08 },
+        ],
+        ai_alert: "Demo screening completed. KYC is verified and no compliance flags were raised in this frontend demo flow.",
+        alert_id: null,
+        message: "Transaction is clean because KYC is verified.",
+        demo: true,
+      };
+    }
+
     const flags = [];
     if (payload.amount > 500000 && !payload.kyc_verified) {
       flags.push({

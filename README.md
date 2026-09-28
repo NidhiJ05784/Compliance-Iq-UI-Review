@@ -11,7 +11,7 @@ npm install
 npm run dev
 ```
 
-The frontend expects the ComplianceIQ backend at `http://localhost:8000` when the backend is available. It has a safe demo fallback for UI review when the backend is unavailable. Demo values, seeded alerts, and fallback screening responses are interface placeholders—not measured research results.
+The frontend reads its API base URL from `VITE_API_URL`. For the deployed review build, this is `https://compliance-iq-production.up.railway.app`; for local development, copy `.env.example` to `.env` and adjust the value as needed. It has a safe demo fallback for UI review when the backend is unavailable. Demo values, seeded alerts, and fallback screening responses are interface placeholders—not measured research results.
 
 ## Validation scope
 

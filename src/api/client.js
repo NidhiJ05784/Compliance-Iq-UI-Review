@@ -269,10 +269,51 @@ export async function escalateAlert(id) {
   }
 }
 
+function normalizeTransactionResult(data = {}) {
+  const violations = Array.isArray(data.violations)
+    ? data.violations
+    : Array.isArray(data.flags)
+    ? data.flags
+    : [];
+
+  const flags = violations.map((violation) => ({
+    rule:
+      violation.rule ||
+      violation.rule_name ||
+      violation.rule_id ||
+      "Compliance violation",
+    reason:
+      violation.reason ||
+      violation.detail ||
+      violation.description ||
+      "Review the backend-provided compliance finding.",
+    severity: String(violation.severity || "medium").toLowerCase(),
+    section:
+      violation.section ||
+      violation.regulation_source ||
+      violation.regulation ||
+      "—",
+  }));
+
+  return {
+    ...data,
+    risk_level: String(data.risk_level || "unknown").toLowerCase(),
+    flags,
+    violations_found: data.violations_found ?? flags.length,
+    ai_alert:
+      data.ai_alert ||
+      data.message ||
+      "No explanation was returned by the compliance pipeline.",
+    ml_probability:
+      data.ml_probability ?? data.model_probability ?? null,
+    shap_explanation: parseShapFeatures(data.shap_explanation),
+  };
+}
+
 export async function checkTransaction(payload) {
   try {
     const response = await API.post("/transactions/check", payload);
-    return response.data;
+    return normalizeTransactionResult(response.data);
   } catch (error) {
     if (error.response || !isDemoMode()) throw error;
 
